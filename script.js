@@ -14,6 +14,7 @@ var score = 0;
 var playing = false;
 var sound = false;
 
+// Init Sound Synthesizer
 var context = new AudioContext();
 var o = context.createOscillator();
 var g = context.createGain();
@@ -53,8 +54,27 @@ function playSound(buttonNumber, length) {
   g.gain.setTargetAtTime(volume, context.currentTime + 0.05, 0.025);
   sound = true;
   setTimeout(function() {
-    stopTone();
+    stopSound();
   }, length); 
 }
 
-// Init Sound Synthesizer
+function stopSound() {
+  g.gain.setTargetAtTime(0, context.currentTime + 0.05, 0.025);
+  sound = false;
+}
+
+function lightButton(buttonNum) {
+  document.getElementById("button" + buttonNum).classList.add("lit");
+}
+
+function extinguishButton(buttonNum) {
+  document.getElementById("button" + buttonNum).classList.remove("lit");
+} 
+
+function playSingleClue(buttonNum) {
+  if (playing) {
+    lightButton(buttonNum);
+    playSound(buttonNum, clueHoldTime);
+    setTimeout(extinguishButton, clueHoldTime, buttonNum);
+  }
+}
