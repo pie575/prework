@@ -26,6 +26,7 @@ function generateSequence() {
 }
 
 function startGaming() {
+  console.log("Game has started")
   generateSequence();
   console.log(sequence);
   playing = true;
@@ -39,6 +40,7 @@ function startGaming() {
 }
 
 function stopGaming() {
+  console.log("Game has ended")
   playing = false;
   document.getElementById("startButton").classList.remove("hidden");
   document.getElementById("stopButton").classList.add("hidden");
@@ -92,7 +94,6 @@ function playSingleClue(buttonNum) {
 }
 
 function playGame() {
-  score = 0;
   let delay = clueHoldTime; 
   for (let i = 0; i <= score; i++) {
     // for each clue that is revealed so far
@@ -113,9 +114,9 @@ function victory() {
 }
 
 function guess(btn) {
-  console.log("user guessed: " + btn);
-  console.log(guessCount)
-  console.log(score)
+  console.log("guessed: " + btn);
+  console.log(guessCount);
+
   if (!playing) {
     return;
   }
@@ -128,13 +129,12 @@ function guess(btn) {
         //WIN!
         victory(); 
       } else {
-        console.log("HERE")
         //not win yet
         score++;
+        
         playGame();
+        console.log("Score is: " +score);
       }
-    } else {
-      guessCount++;
     }
   } else {
     //Guess was incorrect
