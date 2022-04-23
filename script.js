@@ -68,11 +68,11 @@ function stopSound() {
 }
 
 const frequencies = {
-  1: 261.6,
-  2: 329.6,
-  3: 392,
-  4: 466.2
-}
+  1: 415,
+  2: 310,
+  3: 252,
+  4: 209
+} // traditional simon says frequencies
 
 // Init Sound Synthesizer
 var context = new AudioContext();
