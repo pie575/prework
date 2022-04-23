@@ -8,8 +8,9 @@ const clueHoldTime = 1000;
 const numButtons = 4;
 const volume = 0.5;
 const frequencies = [415,310,252,209]; // traditional simon says sounds
+const size = 8
 
-var sequence = [0,0,0,0,0,0,0,0]; // initalized pattern for testing purposes
+var sequence = []; // initalized pattern for testing purposes
 var score = 0;
 var guessCount = 0;
 var playing = false;
@@ -28,12 +29,13 @@ o.start(0);
 // Functions for modularity
 function generateSequence() {
   // sequence of buttons the game will play
-  for (let i = 0; i < sequence.length; i++) {
+  for (let i = 0; i < size; i++) {
     sequence[i] = Math.ceil(Math.random() * numButtons);
   }
 }
 
 function startGaming() {
+  console.log(sequence);
   playing = true;
   score = 0;
 
@@ -51,12 +53,20 @@ function stopGaming() {
 }
 
 function playSound(buttonNumber, length) {
-  o.frequency.value = frequencies[buttonNumber];
+  o.frequency.value = frequencies[buttonNumber - 1];
   g.gain.setTargetAtTime(volume, context.currentTime + 0.05, 0.025);
   sound = true;
   setTimeout(function() {
     stopSound();
   }, length); 
+}
+
+function startSound(btn) {
+  if (!sound) {
+    o.frequency.value = frequencies[btn - 1];
+    g.gain.setTargetAtTime(volume, context.currentTime + 0.05, 0.025);
+    sound = true;
+  }
 }
 
 function stopSound() {
@@ -82,7 +92,7 @@ function playSingleClue(buttonNum) {
 
 function playGame() {
   score = 0;
-  let delay = clueHoldTime; //set delay to initial wait time
+  let delay = clueHoldTime; 
   for (let i = 0; i <= score; i++) {
     // for each clue that is revealed so far
     setTimeout(playSingleClue, delay, sequence[i]); // set a timeout to play that clue
@@ -111,7 +121,7 @@ function guess(btn) {
   if (btn === sequence[guessCount]) {
     if (guessCount === score) {
     // correct guess
-      if (score === sequence.length - 1) {
+      if (score === size - 1) {
         //WIN!
         victory(); 
       } else {
