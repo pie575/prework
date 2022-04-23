@@ -11,6 +11,7 @@ const frequencies = [415,310,252,209]; // traditional simon says sounds
 
 var sequence = [0,0,0,0,0,0,0,0]; // initalized pattern for testing purposes
 var score = 0;
+var guessCount = 0;
 var playing = false;
 var sound = false;
 
@@ -32,7 +33,7 @@ function generateSequence() {
   }
 }
 
-function startGame() {
+function startGaming() {
   playing = true;
   score = 0;
 
@@ -43,10 +44,10 @@ function startGame() {
   playGame();
 }
 
-function stopGame() {
+function stopGaming() {
   playing = false;
-  document.getElementById("startBtn").classList.remove("hidden");
-  document.getElementById("stopBtn").classList.add("hidden");
+  document.getElementById("startButton").classList.remove("hidden");
+  document.getElementById("stopButton").classList.add("hidden");
 }
 
 function playSound(buttonNumber, length) {
@@ -91,12 +92,12 @@ function playGame() {
 }
 
 function defeat() {
-  stopGame();
+  stopGaming();
   alert("Game Over. You lost.");
 }
 
 function victory() {
-  stopGame();
+  stopGaming();
   alert("Game Over. You won!");
 }
 
@@ -106,33 +107,24 @@ function guess(btn) {
     return;
   }
 
-  // add game logic here
-  if (btn === sequence[guessCounter]) {
-    //Guess was correct!
-    if (guessCounter === progress) {
-      if (progress === pattern.length - 1) {
-        //GAME OVER: WIN!
-        winGame(); 
-        reset = true;
+  // Logic
+  if (btn === sequence[guessCount]) {
+    if (guessCount === score) {
+    // correct guess
+      if (score === sequence.length - 1) {
+        //WIN!
+        victory(); 
       } else {
-        //Pattern correct. Add next segment
-        progress++;
-        playClueSequence();
+        //not win yet
+        score++;
+        playGame();
       }
     } else {
-      //so far so good... check the next guess
-      guessCounter++;
+      guessCount++;
     }
   } else {
     //Guess was incorrect
-    mistakes++;
-    if (mistakes === 3) {
       //GAME OVER: LOSE!
-      loseGame();
-      reset = true;
-    } else {
-      //Increment errors
-      alert("Wrong! Attempts left:" + (3 - mistakes));
-    }
+      defeat();
   }
 }
