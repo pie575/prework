@@ -78,3 +78,61 @@ function playSingleClue(buttonNum) {
     setTimeout(extinguishButton, clueHoldTime, buttonNum);
   }
 }
+
+function playGame() {
+  score = 0;
+  let delay = clueHoldTime; //set delay to initial wait time
+  for (let i = 0; i <= score; i++) {
+    // for each clue that is revealed so far
+    setTimeout(playSingleClue, delay, sequence[i]); // set a timeout to play that clue
+    delay += clueHoldTime;
+    delay += clueWaitTime;
+  } 
+}
+
+function defeat() {
+  stopGame();
+  alert("Game Over. You lost.");
+}
+
+function victory() {
+  stopGame();
+  alert("Game Over. You won!");
+}
+
+function guess(btn) {
+  console.log("user guessed: " + btn);
+  if (!playing) {
+    return;
+  }
+
+  // add game logic here
+  if (btn === sequence[guessCounter]) {
+    //Guess was correct!
+    if (guessCounter === progress) {
+      if (progress === pattern.length - 1) {
+        //GAME OVER: WIN!
+        winGame(); 
+        reset = true;
+      } else {
+        //Pattern correct. Add next segment
+        progress++;
+        playClueSequence();
+      }
+    } else {
+      //so far so good... check the next guess
+      guessCounter++;
+    }
+  } else {
+    //Guess was incorrect
+    mistakes++;
+    if (mistakes === 3) {
+      //GAME OVER: LOSE!
+      loseGame();
+      reset = true;
+    } else {
+      //Increment errors
+      alert("Wrong! Attempts left:" + (3 - mistakes));
+    }
+  }
+}
