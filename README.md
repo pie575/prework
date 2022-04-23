@@ -63,7 +63,7 @@ I'd like to try something with formatting, specifically trying out adding differ
 
 ## Interview Recording URL Link
 
-[My 5-minute Interview Recording](your-link-here)
+[My 5-minute Interview Recording](https://princeton.zoom.us/rec/share/q-8yBgzOtKXQrPnJkHD8pbg9uoSujsE8ZWDz1hBv_VO0MbNFhriNPyQfkXhoOTfD.oek1moxmOSPOxEvb?startTime=1650679781000)
 
 
 ## License
