@@ -16,15 +16,6 @@ var guessCount = 0;
 var playing = false;
 var sound = false;
 
-// Init Sound Synthesizer
-var context = new AudioContext();
-var o = context.createOscillator();
-var g = context.createGain();
-g.connect(context.destination);
-g.gain.setValueAtTime(0, context.currentTime);
-o.connect(g);
-o.start(0);
-
 
 // Functions for modularity
 function generateSequence() {
@@ -35,14 +26,15 @@ function generateSequence() {
 }
 
 function startGaming() {
+  generateSequence();
   console.log(sequence);
   playing = true;
   score = 0;
+  guessCount = 0;
 
   document.getElementById("startButton").classList.add("hidden");
   document.getElementById("stopButton").classList.remove("hidden");
   
-  generateSequence();
   playGame();
 }
 
@@ -73,6 +65,15 @@ function stopSound() {
   g.gain.setTargetAtTime(0, context.currentTime + 0.05, 0.025);
   sound = false;
 }
+
+// Init Sound Synthesizer
+var context = new AudioContext();
+var o = context.createOscillator();
+var g = context.createGain();
+g.connect(context.destination);
+g.gain.setValueAtTime(0, context.currentTime);
+o.connect(g);
+o.start(0);
 
 function lightButton(buttonNum) {
   document.getElementById("button" + buttonNum).classList.add("lit");
@@ -113,6 +114,8 @@ function victory() {
 
 function guess(btn) {
   console.log("user guessed: " + btn);
+  console.log(guessCount)
+  console.log(score)
   if (!playing) {
     return;
   }
@@ -125,6 +128,7 @@ function guess(btn) {
         //WIN!
         victory(); 
       } else {
+        console.log("HERE")
         //not win yet
         score++;
         playGame();
