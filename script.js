@@ -7,7 +7,6 @@ const clueWaitTime = 333; //how long to pause in between clues
 const clueHoldTime = 1000;
 const numButtons = 4;
 const volume = 0.5;
-const frequencies = [415,310,252,209]; // traditional simon says sounds
 const size = 8
 
 var sequence = []; // initalized pattern for testing purposes
@@ -47,7 +46,7 @@ function stopGaming() {
 }
 
 function playSound(buttonNumber, length) {
-  o.frequency.value = frequencies[buttonNumber - 1];
+  o.frequency.value = frequencies[buttonNumber];
   g.gain.setTargetAtTime(volume, context.currentTime + 0.05, 0.025);
   sound = true;
   setTimeout(function() {
@@ -57,7 +56,7 @@ function playSound(buttonNumber, length) {
 
 function startSound(btn) {
   if (!sound) {
-    o.frequency.value = frequencies[btn - 1];
+    o.frequency.value = frequencies[btn];
     g.gain.setTargetAtTime(volume, context.currentTime + 0.05, 0.025);
     sound = true;
   }
@@ -66,6 +65,13 @@ function startSound(btn) {
 function stopSound() {
   g.gain.setTargetAtTime(0, context.currentTime + 0.05, 0.025);
   sound = false;
+}
+
+const frequencies = {
+  1: 261.6,
+  2: 329.6,
+  3: 392,
+  4: 466.2
 }
 
 // Init Sound Synthesizer
@@ -94,6 +100,7 @@ function playSingleClue(buttonNum) {
 }
 
 function playGame() {
+  guessCount = 0;
   let delay = clueHoldTime; 
   for (let i = 0; i <= score; i++) {
     // for each clue that is revealed so far
@@ -128,15 +135,23 @@ function guess(btn) {
       if (score === size - 1) {
         //WIN!
         victory(); 
-      } else {
+      } 
+      else {
         //not win yet
         score++;
         
         playGame();
         console.log("Score is: " +score);
       }
+    } 
+    else {
+      guessCount++;
     }
-  } else {
+  } 
+  else {
+    console.log("Answer was:");
+    console.log(sequence[guessCount]);
+    console.log(btn);
     //Guess was incorrect
       //GAME OVER: LOSE!
       defeat();
